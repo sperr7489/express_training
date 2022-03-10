@@ -7,7 +7,6 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 const indexRouter = require('./routes');
-const testRouter  =require('./routes/test');
 
 const app=express();
 
@@ -30,7 +29,6 @@ app.use(session({
 }));
 
 app.use('/',indexRouter);
-app.use('/test',testRouter);
 
 app.use((req,res,next)=>{
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);

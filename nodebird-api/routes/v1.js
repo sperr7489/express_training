@@ -1,10 +1,12 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
-const { verifyToken } = require('./middlewares');
+const { verifyToken, deprecated } = require('./middlewares');
 const { Domain, User,Post,Hashtag } = require('../models');
 
 const router = express.Router();
+
+router.use(deprecated);
 
 router.post('/token', async (req, res) => {
   const { clientSecret } = req.body;
@@ -86,7 +88,7 @@ router.get('/posts/hashtag/:title', verifyToken,async (req,res)=>{
         console.error(error);
         return res.status(500).json({
             code:500,
-            message:"서버 에러."
+            message:"서버 에러.",
         })
     }
 })
