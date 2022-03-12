@@ -5,6 +5,21 @@ const { verifyToken, apiLimiter } = require('./middlewares');
 const { Domain, User, Post, Hashtag } = require('../models');
 
 const router = express.Router();
+const cors = require("cors");
+
+router.use(async (req, res, next) => {
+  const domain = await Domain.findOne({
+    where: { host: url.parse(req.get('origin')).host }
+  });
+  if (domain) {
+    cors({
+      origin: req.get('origin'),
+      credentials: true,
+    })(req, res, next);
+  } else {
+    next();
+  }
+})
 
 router.post('/token', apiLimiter, async (req, res) => {
   const { clientSecret } = req.body;
